@@ -1,0 +1,19 @@
+name: deploy-auth
+
+on: 
+  push:
+    branches:
+      - master
+    paths:
+      - 'auth/**'
+jobs:
+  build:
+    - runs-on: ubuntu-latest
+      steps:
+        - uses: action/checkout@v2
+        - run: cd auth && docker build -t raynerlim/auth .
+        - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          env:
+            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }) #Add actual value into Github secrets 
+            DOCKER_PASSWORD: ${{ secrets.DOCKER_USERNAME }) #Add actual value into Github secrets
+        - run: docker push raynerlim/auth
