@@ -17,3 +17,8 @@ jobs:
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }) #Add actual value into Github secrets 
             DOCKER_PASSWORD: ${{ secrets.DOCKER_USERNAME }) #Add actual value into Github secrets
         - run: docker push raynerlim/auth
+        - uses: digitalocean/action-doctl@v2
+          with:
+            token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}  #Add actual value into Github secrets
+        - run: doctl kubernetes cluster kubeconfig save ticketing
+        - run: kubectl rollout restart deployment auth-depl
